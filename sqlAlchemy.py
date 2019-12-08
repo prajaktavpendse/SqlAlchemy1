@@ -12,6 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import or_, and_, not_
 from sqlalchemy import desc
+from sqlalchemy import func
 
 engine = create_engine('sqlite:///sqlalchemy_tuts.db')
 engine.connect()
@@ -276,3 +277,14 @@ print(repr(session.query(
     Order.id,
 ).outerjoin(Order).all()
            ))
+
+print(repr(session.query(func.count(Customer.id)).join(Order).filter(
+    Customer.first_name == 'John',
+    Customer.last_name == 'Green',
+).group_by(Customer.id).scalar()
+))
+
+print(repr(session.query(
+    func.count("*").label('town_count'),
+    Customer.town
+).group_by(Customer.town).having(func.count("*") > 2).all()))
