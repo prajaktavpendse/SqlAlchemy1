@@ -2,7 +2,7 @@ import sqlalchemy
 from sqlalchemy import create_engine, CheckConstraint, Numeric
 from sqlalchemy import create_engine, MetaData, Table, Integer, String, Column, Text, DateTime, Boolean, ForeignKey, SmallInteger
 from datetime import datetime
-from sqlalchemy import insert
+from sqlalchemy import insert, text
 from sqlalchemy import select
 from sqlalchemy.orm import relationship, Session, sessionmaker
 from sqlalchemy.sql import func
@@ -322,10 +322,15 @@ session.query(Item).filter(
 
 i = session.query(Item).filter(Item.name == 'Monitor').one()
 print(repr(i))
-session.delete(i)
-session.commit()
+#session.delete(i) #commented out in a newer commit
+#session.commit()  #commented out in a newer commit
 
 session.query(Item).filter(
     Item.name.ilike("W%")
 ).delete(synchronize_session='fetch')
-session.commit()
+#session.commit() #commented out in a newer commit
+
+print(repr(session.query(Customer).filter(text("first_name = 'John'")).all()))
+print(repr(session.query(Customer).filter(text("town like 'Nor%'")).all()))
+print(repr(session.query(Customer).filter(text("town like 'Nor%'")).order_by(text("first_name, id desc")).all()))
+
