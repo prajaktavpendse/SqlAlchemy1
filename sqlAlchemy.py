@@ -11,6 +11,7 @@ from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import or_, and_, not_
+from sqlalchemy import desc
 
 engine = create_engine('sqlite:///sqlalchemy_tuts.db')
 engine.connect()
@@ -252,4 +253,6 @@ print(session.query(Customer).filter(Customer.address.ilike("%avenue")).limit(2)
 
 print(session.query(Customer).limit(2).offset(2).all())
 
-
+print(session.query(Item).filter(Item.name.ilike("wa%")).all())
+print(session.query(Item).filter(Item.name.ilike("wa%")).order_by(Item.cost_price).all())
+print(session.query(Item).filter(Item.name.ilike("wa%")).order_by(desc(Item.cost_price)).all())
