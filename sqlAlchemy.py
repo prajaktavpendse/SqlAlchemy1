@@ -191,3 +191,7 @@ for c in q:
     print(c.id, c.first_name)
 
 print(session.query(Customer.id, Customer.first_name).all())
+
+print(session.query(Customer).count())
+print(session.query(Item).count())
+print(session.query(Order).count())
