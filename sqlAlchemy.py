@@ -246,3 +246,7 @@ print(session.query(Item).filter(Item.cost_price.between(10, 50)).all())
 print(session.query(Item).filter(not_(Item.cost_price.between(10, 50))).all())
 print(session.query(Item).filter(Item.name.like("%r")).all())
 print(session.query(Item).filter(not_(Item.name.like("W%"))).all())
+
+print(session.query(Customer).limit(2).all())
+print(session.query(Customer).filter(Customer.address.ilike("%avenue")).limit(2).all())
+
