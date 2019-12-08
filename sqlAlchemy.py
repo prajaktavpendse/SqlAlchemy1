@@ -15,6 +15,11 @@ from sqlalchemy import desc
 from sqlalchemy import func
 from sqlalchemy import cast, Date, distinct, union
 
+from sqlalchemy import update
+from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+
+
 engine = create_engine('sqlite:///sqlalchemy_tuts.db')
 engine.connect()
 
@@ -334,3 +339,32 @@ print(repr(session.query(Customer).filter(text("first_name = 'John'")).all()))
 print(repr(session.query(Customer).filter(text("town like 'Nor%'")).all()))
 print(repr(session.query(Customer).filter(text("town like 'Nor%'")).order_by(text("first_name, id desc")).all()))
 
+
+def dispatch_order(order_id):
+    # check whether order_id is valid or not
+    order = session.query(Order).get(order_id)
+
+    if not order:
+        raise ValueError("Invalid order id: {}.".format(order_id))
+
+    if order.date_shipped:
+        print("Order already shipped.")
+        return
+
+    try:
+        for i in order.order_lines:
+            i.item.quantity = i.item.quantity - i.quantity
+
+        order.date_shipped = datetime.now()
+        session.commit()
+        print("Transaction completed.")
+
+    except IntegrityError as e:
+        print(e)
+        print("Rolling back ...")
+        session.rollback()
+        print("Transaction failed.")
+
+dispatch_order(1)
+
+dispatch_order(2)
