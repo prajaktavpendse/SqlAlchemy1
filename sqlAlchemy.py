@@ -156,5 +156,27 @@ c6 = Customer(first_name='Scott',
 print("{} {}".format(c1, c2))
 print("{} {}".format(c1.id, c2.id))
 
-session.add_all([c1, c2, c3, c4, c5, c6])
+# session.add_all([c1, c2, c3, c4, c5, c6]) commented in new commits
+
+i1 = Item(name='Chair', cost_price=9.21, selling_price=10.81, quantity=5)
+i2 = Item(name='Pen', cost_price=3.45, selling_price=4.51, quantity=3)
+i3 = Item(name='Headphone', cost_price=15.52, selling_price=16.81, quantity=50)
+i4 = Item(name='Travel Bag', cost_price=20.1, selling_price=24.21, quantity=50)
+i5 = Item(name='Keyboard', cost_price=20.1, selling_price=22.11, quantity=50)
+i6 = Item(name='Monitor', cost_price=200.14, selling_price=212.89, quantity=50)
+i7 = Item(name='Watch', cost_price=100.58, selling_price=104.41, quantity=50)
+i8 = Item(name='Water Bottle', cost_price=20.89, selling_price=25, quantity=50)
+
+session.add_all([i1, i2, i3, i4, i5, i6, i7, i8])
+session.commit()
+
+o1 = Order(customer=c1)
+o2 = Order(customer=c1)
+
+line_item1 = OrderLine(order=o1, item=i1, quantity=3)
+line_item2 = OrderLine(order=o1, item=i2, quantity=2)
+line_item3 = OrderLine(order=o2, item=i1, quantity=1)
+line_item3 = OrderLine(order=o2, item=i2, quantity=4)
+
+session.add_all([o1, o2])
 session.commit()
