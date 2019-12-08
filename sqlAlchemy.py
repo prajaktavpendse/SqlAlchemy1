@@ -79,6 +79,7 @@ class Item(Base):
     name = Column(String(200), nullable=False)
     cost_price = Column(Numeric(10, 2), nullable=False)
     selling_price = Column(Numeric(10, 2), nullable=False)
+    quantity = Column(Integer())
 
 
 #     orders = relationship("Order", backref='customer')
@@ -89,6 +90,7 @@ class Order(Base):
     id = Column(Integer(), primary_key=True)
     customer_id = Column(Integer(), ForeignKey('customers.id'))
     date_placed = Column(DateTime(), default=datetime.now)
+    date_shipped = Column(DateTime)
     line_items = relationship("OrderLine", secondary="order_lines", backref='order')
 
 
@@ -234,3 +236,9 @@ print(session.query(Customer).filter(and_(
         Customer.town == 'Peterbrugh',
     )
 )).all())
+
+print(session.query(Order).filter(Order.date_shipped == None).all())
+print(session.query(Order).filter(Order.date_shipped != None).all())
+print(session.query(Customer).filter(Customer.first_name.in_(['Toby', 'Sarah'])).all())
+print(session.query(Customer).filter(Customer.first_name.notin_(['Toby', 'Sarah'])).all())
+
