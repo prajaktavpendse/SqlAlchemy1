@@ -312,10 +312,20 @@ print(repr(s1.union(s2).all()))
 
 i = session.query(Item).get(8)
 i.selling_price = 25.91
-session.add(i)
-session.commit()
+# session.add(i) # commented out in a newer commit
+# session.commit() # commented out in a newer commit
 
 session.query(Item).filter(
     Item.name.ilike("W%")
 ).update({"quantity": 60}, synchronize_session='fetch')
+#session.commit() #commented out in a newer commit
+
+i = session.query(Item).filter(Item.name == 'Monitor').one()
+print(repr(i))
+session.delete(i)
+session.commit()
+
+session.query(Item).filter(
+    Item.name.ilike("W%")
+).delete(synchronize_session='fetch')
 session.commit()
