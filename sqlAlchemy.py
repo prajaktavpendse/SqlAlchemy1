@@ -208,3 +208,8 @@ print(session.query(Order).count())
 print(session.query(Customer).first())
 print(session.query(Item).first())
 print(session.query(Order).first())
+
+print(session.query(Customer).get(1))
+print(session.query(Item).get(1))
+print(session.query(Order).get(100))
+
