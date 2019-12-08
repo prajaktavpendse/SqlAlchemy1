@@ -10,7 +10,7 @@ from sqlalchemy import update
 from sqlalchemy import delete
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
-
+from sqlalchemy import or_, and_, not_
 
 engine = create_engine('sqlite:///sqlalchemy_tuts.db')
 engine.connect()
@@ -214,3 +214,23 @@ print(session.query(Item).get(1))
 print(session.query(Order).get(100))
 
 print(session.query(Customer).filter(Customer.first_name == 'John').all())
+
+# find all customers who either live in Peterbrugh or Norfolk
+
+print(session.query(Customer).filter(or_(
+    Customer.town == 'Peterbrugh',
+    Customer.town == 'Norfolk'
+)).all())
+
+print(session.query(Customer).filter(and_(
+    Customer.first_name == 'John',
+    Customer.town == 'Norfolk'
+)).all())
+
+
+print(session.query(Customer).filter(and_(
+    Customer.first_name == 'John',
+    not_(
+        Customer.town == 'Peterbrugh',
+    )
+)).all())
