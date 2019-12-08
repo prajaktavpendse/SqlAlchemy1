@@ -167,8 +167,8 @@ i6 = Item(name='Monitor', cost_price=200.14, selling_price=212.89, quantity=50)
 i7 = Item(name='Watch', cost_price=100.58, selling_price=104.41, quantity=50)
 i8 = Item(name='Water Bottle', cost_price=20.89, selling_price=25, quantity=50)
 
-session.add_all([i1, i2, i3, i4, i5, i6, i7, i8])
-session.commit()
+#session.add_all([i1, i2, i3, i4, i5, i6, i7, i8]) #commented in new commit
+#session.commit() #commented in new commit
 
 o1 = Order(customer=c1)
 o2 = Order(customer=c1)
@@ -178,5 +178,16 @@ line_item2 = OrderLine(order=o1, item=i2, quantity=2)
 line_item3 = OrderLine(order=o2, item=i1, quantity=1)
 line_item3 = OrderLine(order=o2, item=i2, quantity=4)
 
-session.add_all([o1, o2])
-session.commit()
+# session.add_all([o1, o2]) #commented in new commit
+# session.commit() #commented in new commit
+
+print(session.query(Customer).all())
+print(session.query(Item).all())
+print(session.query(Order).all())
+print(session.query(Customer))
+q = session.query(Customer)
+
+for c in q:
+    print(c.id, c.first_name)
+
+print(session.query(Customer.id, Customer.first_name).all())
