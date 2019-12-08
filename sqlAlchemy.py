@@ -13,7 +13,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import or_, and_, not_
 from sqlalchemy import desc
 from sqlalchemy import func
-from sqlalchemy import distinct
+from sqlalchemy import cast, Date, distinct, union
 
 engine = create_engine('sqlite:///sqlalchemy_tuts.db')
 engine.connect()
@@ -297,3 +297,11 @@ print(repr(session.query(
     func.count(distinct(Customer.town)),
     func.count(Customer.town)
 ).all()))
+
+print(repr(session.query(
+    cast(func.pi(), Integer),
+    cast(func.pi(), Numeric(10,2)),
+    cast("2010-12-01", DateTime),
+    cast("2010-12-01", Date),
+).all()
+))
