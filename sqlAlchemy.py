@@ -181,9 +181,18 @@ line_item3 = OrderLine(order=o2, item=i2, quantity=4)
 # session.add_all([o1, o2]) #commented in new commit
 # session.commit() #commented in new commit
 
-print(session.query(Customer).all())
-print(session.query(Item).all())
-print(session.query(Order).all())
+all_customers = session.query(Customer).all()
+for customer in all_customers:
+    print(customer)
+
+all_items = session.query(Item).all()
+for item in all_items:
+    print(item)
+
+all_orders = session.query(Order).all()
+for order in all_orders:
+    print(order)
+
 print(session.query(Customer))
 q = session.query(Customer)
 
@@ -192,6 +201,10 @@ for c in q:
 
 print(session.query(Customer.id, Customer.first_name).all())
 
-print(session.query(Customer).count())
+count1 = session.query(Customer).count()
 print(session.query(Item).count())
 print(session.query(Order).count())
+
+print(session.query(Customer).first())
+print(session.query(Item).first())
+print(session.query(Order).first())
