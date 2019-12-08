@@ -270,3 +270,9 @@ print(repr(session.query(
     Customer.last_name == 'Green',
     Order.id == 1,
 ).all()))
+
+print(repr(session.query(
+    Customer.first_name,
+    Order.id,
+).outerjoin(Order).all()
+           ))
