@@ -13,6 +13,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import or_, and_, not_
 from sqlalchemy import desc
 from sqlalchemy import func
+from sqlalchemy import distinct
 
 engine = create_engine('sqlite:///sqlalchemy_tuts.db')
 engine.connect()
@@ -288,3 +289,11 @@ print(repr(session.query(
     func.count("*").label('town_count'),
     Customer.town
 ).group_by(Customer.town).having(func.count("*") > 2).all()))
+
+print(repr(session.query(Customer.town).filter(Customer.id < 10).all()))
+print(repr(session.query(Customer.town).filter(Customer.id < 10).distinct().all()))
+
+print(repr(session.query(
+    func.count(distinct(Customer.town)),
+    func.count(Customer.town)
+).all()))
