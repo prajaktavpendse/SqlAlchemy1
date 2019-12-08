@@ -202,57 +202,71 @@ q = session.query(Customer)
 for c in q:
     print(c.id, c.first_name)
 
-print(session.query(Customer.id, Customer.first_name).all())
+print(repr(session.query(Customer.id, Customer.first_name).all()))
 
 count1 = session.query(Customer).count()
-print(session.query(Item).count())
-print(session.query(Order).count())
+print(repr(session.query(Item).count()))
+print(repr(session.query(Order).count()))
 
-print(session.query(Customer).first())
-print(session.query(Item).first())
-print(session.query(Order).first())
+print(repr(session.query(Customer).first()))
+print(repr(session.query(Item).first()))
+print(repr(session.query(Order).first()))
 
-print(session.query(Customer).get(1))
-print(session.query(Item).get(1))
-print(session.query(Order).get(100))
+print(repr(session.query(Customer).get(1)))
+print(repr(session.query(Item).get(1)))
+print(repr(session.query(Order).get(100)))
 
-print(session.query(Customer).filter(Customer.first_name == 'John').all())
+print(repr(session.query(Customer).filter(Customer.first_name == 'John').all()))
 
 # find all customers who either live in Peterbrugh or Norfolk
 
-print(session.query(Customer).filter(or_(
+print(repr(session.query(Customer).filter(or_(
     Customer.town == 'Peterbrugh',
     Customer.town == 'Norfolk'
-)).all())
+)).all()))
 
-print(session.query(Customer).filter(and_(
+print(repr(session.query(Customer).filter(and_(
     Customer.first_name == 'John',
     Customer.town == 'Norfolk'
-)).all())
+)).all()))
 
 
-print(session.query(Customer).filter(and_(
+print(repr(session.query(Customer).filter(and_(
     Customer.first_name == 'John',
     not_(
         Customer.town == 'Peterbrugh',
     )
-)).all())
+)).all()))
 
-print(session.query(Order).filter(Order.date_shipped == None).all())
-print(session.query(Order).filter(Order.date_shipped != None).all())
-print(session.query(Customer).filter(Customer.first_name.in_(['Toby', 'Sarah'])).all())
-print(session.query(Customer).filter(Customer.first_name.notin_(['Toby', 'Sarah'])).all())
+print(repr(session.query(Order).filter(Order.date_shipped == None).all()))
+print(repr(session.query(Order).filter(Order.date_shipped != None).all()))
+print(repr(session.query(Customer).filter(Customer.first_name.in_(['Toby', 'Sarah'])).all()))
+print(repr(session.query(Customer).filter(Customer.first_name.notin_(['Toby', 'Sarah'])).all()))
 
-print(session.query(Item).filter(Item.cost_price.between(10, 50)).all())
-print(session.query(Item).filter(not_(Item.cost_price.between(10, 50))).all())
-print(session.query(Item).filter(Item.name.like("%r")).all())
-print(session.query(Item).filter(not_(Item.name.like("W%"))).all())
+print(repr(session.query(Item).filter(Item.cost_price.between(10, 50)).all()))
+print(repr(session.query(Item).filter(not_(Item.cost_price.between(10, 50))).all()))
+print(repr(session.query(Item).filter(Item.name.like("%r")).all()))
+print(repr(session.query(Item).filter(not_(Item.name.like("W%"))).all()))
 
-print(session.query(Customer).limit(2).all())
-print(session.query(Customer).filter(Customer.address.ilike("%avenue")).limit(2).all())
+print(repr(session.query(Customer).limit(2).all()))
+print(repr(session.query(Customer).filter(Customer.address.ilike("%avenue")).limit(2).all()))
 
-print(session.query(Customer).limit(2).offset(2).all())
+print(repr(session.query(Customer).limit(2).offset(2).all()))
 
-print(session.query(Item).filter(Item.name.ilike("wa%")).all())
-print(session.query(Item).filter(Item.name.ilike("wa%")).order_by(Item.cost_price).all())
-print(session.query(Item).filter(Item.name.ilike("wa%")).order_by(desc(Item.cost_price)).all())
+print(repr(session.query(Item).filter(Item.name.ilike("wa%")).all()))
+print(repr(session.query(Item).filter(Item.name.ilike("wa%")).order_by(Item.cost_price).all()))
+print(repr(session.query(Item).filter(Item.name.ilike("wa%")).order_by(desc(Item.cost_price)).all()))
+
+join_results = session.query(Customer).join(Order).all()
+print(repr(join_results))
+
+print(repr(session.query(
+    Customer.first_name,
+    Item.name,
+    Item.selling_price,
+    OrderLine.quantity
+).join(Order).join(OrderLine).join(Item).filter(
+    Customer.first_name == 'John',
+    Customer.last_name == 'Green',
+    Order.id == 1,
+).all()))
