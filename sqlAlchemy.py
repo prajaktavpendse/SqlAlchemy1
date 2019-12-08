@@ -213,3 +213,4 @@ print(session.query(Customer).get(1))
 print(session.query(Item).get(1))
 print(session.query(Order).get(100))
 
+print(session.query(Customer).filter(Customer.first_name == 'John').all())
